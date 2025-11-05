@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+
+<h1>Upload the file</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>file: {{ form.file }}</p>
+    <p>title: {{ form.title }}</p>
+    <p>
+        <input type="checkbox" name="is_public" id="public" checked>
+        <label for="public">public</label>
+    </p>
+    <p>
+        <label>
+            password(only for private links):<br>
+            <input type="password" name="password" id="pwd"
+                   {% if form.is_public.value %}readonly{% endif %}>
+        </label>
+    </p>
+    <button type="submit">submit</button>
+</form>
+
+</body>
+</html>
