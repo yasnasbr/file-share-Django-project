@@ -41,12 +41,14 @@ def view_file(request, link):
         raise Http404("this link is expired")
 
     if not file.is_public:
-        if request.GET.get('pwd')!= file.password:
-            return render(request, 'password.html', {'link': link})
+        if request.method == "POST":
+            password = request.POST.get('password')
+            if password != file.password:
+                return render(request, 'password.html', {'link': link, 'error': 'Incorrect password'})
         else:
-            file.views+=1
-    else:
-        file.views += 1
+            return render(request, 'password.html', {'link': link})
+
+    file.views += 1
 
     file.save()
 
