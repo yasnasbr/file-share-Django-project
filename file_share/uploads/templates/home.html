@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>File Share</title>
+  <style>
+    body {font-family: Arial; margin:0; padding:20px; background:#f9f9fb;}
+    .container {max-width:900px; margin:auto; background:white; padding:25px; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+    h1 {margin:0 0 20px; color:#333;}
+    .btn {padding:10px 20px; background:#007bff; color:white; border:none; border-radius:8px; cursor:pointer; font-size:14px;}
+    table {width:100%; border-collapse:collapse; margin-top:20px;}
+    th, td {padding:10px; text-align:left; border-bottom:1px solid #eee;}
+    th {background:#f8f9fa; color:#555;}
+    .private {color:#d63384;}
+    .public {color:#198754;}
+    .expired {color:#6c757d; text-decoration:line-through;}
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>All Files</h1>
+  <button class="btn" onclick="location.href='{% url 'upload' %}'">Upload New</button>
+
+  <table>
+    <tr>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Expires</th>
+      <th>Views</th>
+      <th>Action</th>
+    </tr>
+    {% for file in files %}
+    <tr {% if file.is_expired %}class="expired"{% endif %}>
+      <td>{{ file.title|default:file.file.name|slice:":30" }}</td>
+      <td>
+        {% if file.is_public %}<span class="public">Public</span>
+        {% else %}<span class="private">Private</span>{% endif %}
+      </td>
+      <td>{{ file.expire_date|date:"M d, Y H:i" }}</td>
+      <td>{{ file.views }}</td>
+      <td>
+        {% if file.is_expired %}Expired
+        {% else %}<a href="{% url 'view_file' file.share_link %}">View</a>{% endif %}
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5" style="text-align:center; color:#aaa;">No files yet.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+</body>
+</html>

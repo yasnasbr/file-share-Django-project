@@ -1,9 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Success</title>
+  <style>
+    body{font-family:Arial;text-align:center;margin-top:100px;}
+    .link input{width:500px;padding:10px;font-size:16px;border:1px solid #ddd;border-radius:8px;}
+    .btn{margin-top:20px;padding:10px 20px;background:#28a745;color:white;border:none;border-radius:8px;cursor:pointer;}
+  </style>
+</head>
 <body>
-
-    <h1><b>{{ obj.title|default:"file" }}</b> was uploaded successfully</h1>
-    <h2>Link:</h2>
-    <input value="http://127.0.0.1:8000/s/{{ link }}" readonly size="60" id="link">
+  <h1>Uploaded!</h1>
+  <p>Share this link:</p>
+  <div class="link">
+    <input value="http://127.0.0.1:8000/view/{{ obj.share_link }}/" readonly id="link">
+  </div>
+  <button class="btn" onclick="copy()">Copy Link</button>
+  <a href="{% url 'home' %}">Back to files</a>
+  <script>
+    function copy() {
+      const link = document.getElementById('link');
+      link.select();
+      document.execCommand('copy');
+      alert('Link copied!');
+    }
+  </script>
 </body>
 </html>
