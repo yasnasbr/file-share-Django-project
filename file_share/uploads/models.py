@@ -1,6 +1,9 @@
 import datetime
+import os
 import uuid
 from datetime import timezone
+from typing import Any
+
 from django.db import models
 
 from django.utils import timezone
@@ -23,17 +26,24 @@ class UploadedFile(models.Model):
     file= models.FileField(upload_to=upload_path)
     title= models.CharField(max_length=120)
     share_link = models.CharField(max_length=10, unique=True, blank=True, editable=False)
-    #saves the number of times the link has been viewed
-    views= models.IntegerField(default=0)
     is_public = models.BooleanField(default=True)
     password=models.CharField(max_length=128,null=True,blank=True)
 
     class Meta:
         ordering=['upload_date']
 
+    def __init__(self, *args: Any, **kwargs: Any):
+        super().__init__(args, kwargs)
+        self.id = None
+
     def save(self, *args, **kwargs):
         if not self.share_link:
             self.share_link = uuid.uuid4().hex[:10]
         super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.file and os.path.isfile(self.file.path):
+            os.remove(self.file.path)
+        super().delete(*args, **kwargs)
 
 
