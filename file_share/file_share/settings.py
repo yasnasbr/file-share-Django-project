@@ -9,7 +9,9 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-import os
+
+from datetime import timedelta
+
 from decouple import config
 from pathlib import Path
 
@@ -136,7 +138,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
@@ -158,12 +160,11 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
-from celery.schedules import crontab
 
 CELERY_BEAT_SCHEDULE = {
     'delete-expired-files-every-12-hours': {
         'task': 'uploads.tasks.delete_expired_files',
-        'schedule': crontab(hour='*/12'),
+        'schedule':timedelta(hours=12),
     },
 }
 

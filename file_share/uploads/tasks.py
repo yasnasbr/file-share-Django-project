@@ -4,11 +4,11 @@ from django.utils import timezone
 
 from .models import UploadedFile
 logger = logging.getLogger(__name__)
+
 @shared_task
 def delete_expired_files():
     now = timezone.now()
     expired_files = UploadedFile.objects.filter(expire_date__lte=now)
-
     for f in expired_files:
         try:
             if f.file:
@@ -16,9 +16,8 @@ def delete_expired_files():
             logger.info(f"Deleted expired file: {f.file.name}")
             f.delete()
         except Exception as e:
-            logger.error(f"Error deleting file {f.id}: {e}")
+            logger.error(f"Error deleting file {f.file.name}: {e}")
 
     logger.info(f"{expired_files.count()} expired files deleted")
-
 
 

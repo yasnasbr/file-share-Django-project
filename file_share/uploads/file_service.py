@@ -1,11 +1,13 @@
 import uuid
 from datetime import timedelta
-
 from django.http import Http404
 from django.utils import timezone
 from .models import UploadedFile
 
 
+"""this function handles uploading a file by assigning a unique share link, title, 
+    public status, optional password, and expiration date.
+"""
 def upload_file(uploaded: UploadedFile, cleaned_data: dict) -> UploadedFile:
     uploaded.share_link = uuid.uuid4().hex[:10]
     uploaded.title = cleaned_data.get('title','')

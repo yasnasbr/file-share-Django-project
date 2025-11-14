@@ -1,3 +1,5 @@
+import uuid
+
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.exceptions import NotFound
@@ -55,7 +57,7 @@ class ViewUploadedFile(APIView):
 
 
 class AllFiles(APIView):
-    def get(self, request):
+    def get(self):
         files = UploadedFile.objects.all().order_by('-upload_date')
         serializer = UploadedFileSerializer(files, many=True)
         return Response({"ok": True, "data": serializer.data}, status=status.HTTP_200_OK)

@@ -32,10 +32,6 @@ class UploadedFile(models.Model):
     class Meta:
         ordering=['upload_date']
 
-    def __init__(self, *args: Any, **kwargs: Any):
-        super().__init__(args, kwargs)
-        self.id = None
-
     def save(self, *args, **kwargs):
         if not self.share_link:
             self.share_link = uuid.uuid4().hex[:10]

@@ -18,3 +18,9 @@ staticfiles/
 .DS_Store
 
 *.env
+
+celerybeat-schedule
+celerybeat.pid
+*.pid
+*.seed
+*.bak
