@@ -24,3 +24,6 @@ celerybeat.pid
 *.pid
 *.seed
 *.bak
+schema.yml
+
+

@@ -62,7 +62,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'uploads',
-    'django_celery_beat'
+    'django_celery_beat',
+    'drf_spectacular',
+    'django_filters',
+
 ]
 
 MIDDLEWARE = [
@@ -76,6 +79,24 @@ MIDDLEWARE = [
 
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API Documentation',
+    'VERSION': '1.0.0',
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SWAGGER_UI_DIST': 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.17.14',
+    'SWAGGER_UI_FAVICON_HREF': 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.17.14/favicon-32x32.png',
+
+    'SWAGGER_UI_SETTINGS': {
+        'tryItOutEnabled': True,
+        'requestSnippetsEnabled': True,
+        'persistAuthorization': True,
+        'displayRequestDuration': True,
+    },
+}
 ROOT_URLCONF = 'file_share.urls'
 
 TEMPLATES = [
